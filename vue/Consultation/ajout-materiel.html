@@ -1,0 +1,80 @@
+<table id="liste">
+			<tr class="th">
+				<td>
+					reference
+				</td>
+				<td>
+					etat
+				</td>
+				<td>
+					quantité
+				</td>
+				<td>
+					où
+				</td>
+				<td id="thCheck" style="display: none;">
+					Inputer sur le Stock ?
+				</td>
+			</tr>
+<form method="post" action='controleur/ajout.php'>
+			<tr>
+				<td>
+					<input id="ref" list="reference" type="text" name="reference" autocomplete="off">
+						<datalist id="reference" >
+							<?php
+								$sth=ReturnReference();
+								foreach ($sth as $value) {
+									echo $value;
+									?>
+									<option value="<?php echo $value ?>" > <?php echo $value ?>
+									</option>
+									<?php
+								};
+							?>
+						</datalist>
+				</td>
+				<td>
+					<select id="etat" name="etat">
+							<option value="neuf"> neuf </option>
+							<option value="reconditioné"> reconditionné </option>
+					</select>
+						
+				</td>
+				<td>
+					<input list="qte" type="number" name="quantité" id="qte" autocomplete="off" required pattern="[0-9]">
+				</td>
+				<td>
+					<select id="ou" name="ou" onchange="afficherCheckbox();">
+						<option value="stock"> Stock</option>
+						<option value="reserve"> Reservé a un client</option>
+						<option value="SAV"> SAV</option>
+						<option value="test"> A tester</option>
+					</select>
+				</td>
+				<td id="tdCheck" style="display: none;">
+					<input type="checkbox" name="check" id="Check" value="on">
+				</td>
+			</tr>
+		</table>
+		<button type="submit">Ajouter</button>
+		</form>
+
+
+		<script type="text/javascript" language="JavaScript">
+
+
+			function afficherCheckbox(){
+				
+				ou=document.getElementById("ou").value;
+
+				if (ou=="stock") {
+					document.getElementById("tdCheck").style.display="none";
+					document.getElementById("thCheck").style.display="none";
+					document.getElementById("Check").checked=false;
+				}
+				else{
+					document.getElementById("tdCheck").style.display="";
+					document.getElementById("thCheck").style.display="";
+				}
+			}
+		</script>

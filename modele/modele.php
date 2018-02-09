@@ -26,7 +26,7 @@ function listeMateriel(){
 	    $mdp = '';
 		$bdd = new PDO ($source, $user, $mdp);
 	try{
-		$resultats = $bdd->prepare("select reference, designation, marque, produit, etat, quantite_total, quantite_minimal, quantite_en_stock, quantite_reserve, quantite_en_test, quantite_en_SAV, commande from MATERIEL order by reference");
+		$resultats = $bdd->prepare("select reference, designation, marque, produit, etat, quantite_total, quantite_minimal, quantite_en_stock, quantite_reserve, quantite_en_test, quantite_en_SAV, commande, fournisseur, emplacement from MATERIEL order by reference");
 		$resultats->execute();
 		$st = $resultats->fetchAll(PDO::FETCH_ASSOC);
 		return $st;
@@ -56,7 +56,7 @@ function listeMaterielTri($order){
 		}
 
 		try{
-			$resultats = $bdd->prepare("select reference, designation, marque, produit, etat, quantite_total, quantite_minimal, quantite_en_stock, quantite_reserve, quantite_en_test, quantite_en_SAV, commande from MATERIEL where (".$order." > 0) ");
+			$resultats = $bdd->prepare("select reference, designation, marque, produit, etat, quantite_total, quantite_minimal, quantite_en_stock, quantite_reserve, quantite_en_test, quantite_en_SAV, commande, fournisseur, emplacement  from MATERIEL where (".$order." > 0)");
 			$resultats->execute();
 			$st = $resultats->fetchAll(PDO::FETCH_ASSOC);
 			return $st;

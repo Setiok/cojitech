@@ -32,6 +32,10 @@ require "modele/modele.php";
 		return listeMaterielTri($page);
 	}
 
+	function afficherAjout(){
+		require "vue/Consultation/ajout-materiel.html";
+	}
+
 
 //Tableau ajout-materiel
 	function ReturnReference(){

@@ -5,14 +5,18 @@
 	<title>Consultation</title>
 </head>
 <body>
+</div>
+<?php testco(); //test de la connexion a la bdd 
+
+afficherAjout(); //affichage du tableau d'ajout
+?>
+<div> 
 	<div id="contenu"> <!--contenu unique de la page consultation -->
 			<?php
 				afficherMenu2(); //affichage du menu consultation
 			?>
-		</div>
-		<?php testco(); //test de la connexion a la bdd 
-		?>
-		<div> <!-- affichage de la liste de tous les materiels par defaut ou d'une catégorie en fonction du sous-menu -->
+		
+			<!-- affichage de la liste de tous les materiels par defaut ou d'une catégorie en fonction du sous-menu -->
 			<table id=liste>
 			<?php
 				$sth=afficherMateriel(); // recuperation du tableau de données

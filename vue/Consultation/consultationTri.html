@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="style/style.css">
+	<title>Consultation</title>
+</head>
+<body>
+	<div id="contenu"> <!--contenu unique de la page consultation -->
+		<div id="menu2">  <!-- affichage du sous menu -->
+			<?php
+				afficherMenu2(); //affichage du menu consultation
+			?>
+		</div>
+		<?php testco(); //test de la connexion a la bdd 
+		?>
+		<div>
+			
+		</div>
+		<div> <!-- affichage de la liste de tous les materiels par defaut ou d'une catégorie en fonction du sous-menu -->
+			<table id=liste>
+			<?php
+				$sth=afficherMaterielTri();// recuperation du tableau de données
+				//var_dump($sth); //pour test si il y a un resultat effacer les // du debut
+				$i=false;
+				foreach ($sth as $table){ //boucle pour l'afichage des données
+					if ($i==false) { 
+						?><tr class="th"><?php
+						foreach($table as $key => $value){
+							?>
+								<td>
+									<?php
+									/* remplacement des _ par un espace */
+									$search = '_';
+									$replace = ' ';
+									$key= str_replace($search, $replace, $key);
+									/* fin du remplacement*/
+									echo $key;
+									?>
+								</td>
+							
+						<?php 
+						$i=true;
+						};
+						?></tr><?php
+					};
+					?><tr><?php
+					foreach($table as $key => $value){
+					?>
+						
+							<td>
+								<?php
+									echo $value;
+								?>
+							</td>
+						
+					<?php
+					};
+					?></tr><?php
+					};
+				?>
+
+			
+			</table>
+		</div>
+	</div>
+</body>
+</html>

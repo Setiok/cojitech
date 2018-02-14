@@ -1,122 +1,80 @@
 <?php require "vue/Ajout/ajout.html"; ?>
 
-
-
-<table id="liste">
-			<tr class="th">
-				<td>
-					reference
-				</td>
-				<td>
-					designation
-				</td>
-				<td>
-					marque
-				</td>
-				<td>
-					produit
-				</td>
-				<td>
-					etat
-				</td>
-				<td>
-					quantité
-				</td>
-				<td>
-					où
-				</td>
-				<td id="thCheck" style="display: none;">
-					Inputer sur le Stock ?
-				</td>
-			</tr>
-<form method="post" action='controleur/ajout.php'>
-			<tr>
-				<td>
-					<input id="ref" list="reference" type="text" name="reference" autocomplete="off">
-						<datalist id="reference" >
-							<?php
-								$sth=ReturnReference();
-								foreach ($sth as $value) {
-									echo $value;
-									?>
-									<option value="<?php echo $value ?>" > <?php echo $value ?>
-									</option>
-									<?php
-								};
-							?>
-						</datalist>
-				</td>
-				<td>
-					<input list="designation" type="text" name="designation" autocomplete="off">
-						<datalist id="designation">
-							<?php 
-								$sth=Returndesignation();
-								foreach ($sth as $value) {
-									echo $value;
-									?>
-									<option value="<?php echo $value ?>" > <?php echo $value ?>
-									</option>
-									<?php
-								};
-							?>
-						</datalist>
-				</td>
-				<td>
-					<input list="marque" type="text" name="marque" autocomplete="off">
-					<datalist id="marque">
-							<?php 
-								$sth=ReturnMarque();
-								foreach ($sth as $value) {
-									echo $value;
-									?>
-									<option value="<?php echo $value ?>" > <?php echo $value ?>
-									</option>
-									<?php
-								};
-							?>
-						</datalist>
-				</td>
-				<td>
-					<select id="produit" name="produit">
-							<?php 
-								$sth=ReturnProduit();
-								foreach ($sth as $value) {
-									echo $value;
-									?>
-									<option value="<?php echo $value ?>" > <?php echo $value ?>
-									</option>
-									<?php
-								};
-							?>
-						
-				</td>
-				<td>
-					<select id="etat" name="etat">
-							<option value="neuf"> neuf
-							</option>
-							<option value="reconditioné"> reconditionné
-							</option>
+<!--affichage du tableau d'ajout-->
+<div>
+	<table id="liste">
+				<tr class="th">
+					<td>
+						reference
+					</td>
+					<td>
+						désignation
+					</td>
+					<td>
+						marque
+					</td>
+					<td>
+						produit
+					</td>
+					<td>
+						fournisseur
+					</td>
+					<td>
+						etat
+					</td>
+					<td>
+						quantité_minimal
+					</td>
+					<td>
+						emplacement
+					</td>
+				</tr>
+	<form method="post" action='controleur/ajout.php'>
+				<tr>
+					<td>
+						<input id="ref" list="reference" type="text" name="reference" autocomplete="off">
+							<datalist id="reference" >
+								<?php
+									$sth=ReturnReference();
+									foreach ($sth as $value) {
+										echo $value;
+										?>
+										<option value="<?php echo $value ?>" > <?php echo $value ?>
+										</option>
+										<?php
+									};
+								?>
+							</datalist>
+					</td>
+					<td>
+						<select id="etat" name="etat">
+								<option value="neuf"> neuf </option>
+								<option value="reconditioné"> reconditionné </option>
+						</select>
 							
-						
-				</td>
-				<td>
-					<input list="qte" type="number" name="quantité" id="qte" autocomplete="off" required pattern="[0-9]">
-				</td>
-				<td>
-					<select id="ou" name="ou" onchange="afficherCheckbox();">
-						<option value="stock"> Stock</option>
-						<option value="reserve"> Reservé a un client</option>
-						<option value="SAV"> SAV</option>
-						<option value="test"> A tester</option>
-					</select>
-				</td>
-				<td id="tdCheck" style="display: none;">
-					<input type="checkbox" name="check" id="Check" value="on">
-				</td>
-			</tr>
-		</table>
-		<button type="submit">Ajouter</button>
-		</form>
+					</td>
+					<td>
+						<input list="qte" type="number" name="quantité" id="qte" autocomplete="off" required pattern="[0-9]" value="0" onchange="afficherCheckbox()">
+					</td>
+					<td>
+						<select id="ou" name="ou" onchange="afficherCheckbox();">
+							<option value="stock"> Stock</option>
+							<option value="reserve"> Reservé a un client</option>
+							<option value="SAV"> SAV</option>
+							<option value="test"> A tester</option>
+						</select>
+					</td>
+					<td id="tdCheckImputer" style="display: none;">
+						<input type="checkbox" name="checkI" id="checkImputer" value="on">
+					</td>
+					<td id="tdCheckAjout" style="display: none;">
+						<input type="checkbox" name="checkA" id="checkAjout" value="on">
+					</td>
+				</tr>
+	</table>
+</div>
+		<button type="submit" name="ajouter" value="on">Ajouter/Modifier</button>
+	</form>
 
 
 		<script type="text/javascript" language="JavaScript">
@@ -124,28 +82,35 @@
 
 			function afficherCheckbox(){
 				
-				ou=document.getElementById("ou").value;
+				var ou=document.getElementById("ou").value;
+				var qte=document.getElementById("qte").value;
 
 				if (ou=="stock") {
-					document.getElementById("tdCheck").style.display="none";
-					document.getElementById("thCheck").style.display="none";
-					document.getElementById("Check").checked=false;
+					document.getElementById("thCheckImputer").style.display="none";
+					document.getElementById("tdCheckImputer").style.display="none";
+					document.getElementById("thCheckAjout").style.display="none";
+					document.getElementById("tdCheckAjout").style.display="none";
+					document.getElementById("checkImputer").checked=false;
+					document.getElementById("checkAjout").checked=false;
 				}
 				else{
-					document.getElementById("tdCheck").style.display="";
-					document.getElementById("thCheck").style.display="";
+					if (qte<0) {
+					document.getElementById("thCheckAjout").style.display="";
+					document.getElementById("tdCheckAjout").style.display="";
+					document.getElementById("thCheckImputer").style.display="none";
+					document.getElementById("tdCheckImputer").style.display="none";
+					document.getElementById("checkImputer").checked=false;
+					}
+					else{
+					document.getElementById("thCheckImputer").style.display="";
+					document.getElementById("tdCheckImputer").style.display="";
+					document.getElementById("thCheckAjout").style.display="none";
+					document.getElementById("tdCheckAjout").style.display="none";
+					document.getElementById("checkAjout").checked=false;
+					}
+					
 				}
 			}
-
-			/*function control(){
-				if(!/^[0-9]+$/.test(document.getElementById("qte"))) {
-   					document.getElementById("qte").style.border="#red";
-   					return false;
-   				}
-   				else
-   				if(document.getElementById("reference")==""){
-   					document.getElementById("reference").style.border="red";
-   					return false;
-   				}
-			}*/
 		</script>
+
+		<!-- fin affichage du menu ajout -->

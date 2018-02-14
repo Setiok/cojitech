@@ -1,8 +1,16 @@
-/*@font-face{
+/*table {margin:auto;border-collapse:collapse;cursor:pointer;}
+td {padding:15px 60px;border:1px solid #000;}
+tr.selected {color:#fff;background:#444 !important;}
+tr:hover {background:#eee;}
+a {display:table;margin:20px auto;padding:10px 40px;text-decoration:none;color:#fff;background:#09f;}
+*/
+
+@font-face{
 	font-family: futura;
 	src:url("_typo/futura.ttf") format("truetype");
 }
 
+/*
 body {
 	background: white;
 	width: 100%;

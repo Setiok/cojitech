@@ -653,24 +653,7 @@ function updateMaterielInStock(){
 };
 //fin fonction mise a jour
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//funcyion mise a jour qte TT
+//function mise a jour qte TT
 function ajoutQteTT(){
 
 		$source = 'mysql:host=127.0.0.1;dbname=cojitech;charset=utf8';
@@ -687,3 +670,126 @@ function ajoutQteTT(){
 		where reference ="'.$_POST['reference'].'"');
 	$updateQteTT->execute();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//fonction pour modif la qte d'un materiel (page consultation)
+function reqAjoutQuantite(){
+	$source = 'mysql:host=127.0.0.1;dbname=cojitech;charset=utf8';
+    $user = 'root';
+    $mdp = '';
+	$bdd = new PDO ($source, $user, $mdp);
+
+	$ref=$_POST['reference'];
+	$etat=$_POST['etat'];
+	$ou=$_POST['ou'];
+	$qte=$_POST['quantité'];
+
+	echo "$ou";
+
+	if ($ou=="stock") {
+		$reqGetQte=$bdd->prepare('select distinct quantite_en_stock from materiel where reference="'.$ref.'" and etat="'.$etat.'"');
+		$reqGetQte->execute();
+		$getQte=$reqGetQte->fetchAll(PDO::FETCH_COLUMN,0);
+		$qteAAjouter=$getQte[0]+$qte;
+
+		echo $getQte[0],"+",$qte,"=",$qteAAjouter;
+
+		$reqUpdateQte=$bdd->prepare('update materiel set quantite_en_stock="'.$qteAAjouter.'" where reference="'.$ref.'" and etat="'.$etat.'"');
+		$reqUpdateQte->execute();
+	}
+
+	elseif ($ou=="reserve") {
+		$reqGetQte=$bdd->prepare('select distinct quantite_reserve from materiel where reference="'.$ref.'" and etat="'.$etat.'"');
+		$reqGetQte->execute();
+		$getQte=$reqGetQte->fetchAll(PDO::FETCH_COLUMN,0);
+
+		$qteAAjouter=$getQte[0]+$qte;
+
+		$reqUpdateQte=$bdd->prepare('update materiel set quantite_reserve="'.$qteAAjouter.'" where reference="'.$ref.'" and etat="'.$etat.'"');
+		$reqUpdateQte->execute();
+	}
+
+	elseif ($ou=="SAV") {
+		$reqGetQte=$bdd->prepare('select distinct quantite_en_SAV from materiel where reference="'.$ref.'" and etat="'.$etat.'"');
+		$reqGetQte->execute();
+		$getQte=$reqGetQte->fetchAll(PDO::FETCH_COLUMN,0);
+
+		$qteAAjouter=$getQte[0]+$qte;
+
+		$reqUpdateQte=$bdd->prepare('update materiel set quantite_en_SAV="'.$qteAAjouter.'" where reference="'.$ref.'" and etat="'.$etat.'"');
+		$reqUpdateQte->execute();
+	}
+
+	elseif ($ou=="test") {
+		$reqGetQte=$bdd->prepare('select distinct quantite_en_test from materiel where reference="'.$ref.'" and etat="'.$etat.'"');
+		$reqGetQte->execute();
+		$getQte=$reqGetQte->fetchAll(PDO::FETCH_COLUMN,0);
+
+		$qteAAjouter=$getQte[0]+$qte;
+		$reqUpdateQte=$bdd->prepare('update materiel set quantite_en_test="'.$qteAAjouter.'" where reference="'.$ref.'" and etat="'.$etat.'"');
+		$reqUpdateQte->execute();
+	}
+
+	else{
+		echo "Erreur de la valeur ou = '".$ou."'";
+		return false;
+	}
+
+	verifCheck($ref,$qte,$etat,$bdd);
+	return true;
+};
+
+function verifCheck($ref,$qte,$etat,$bdd){
+
+	if (isset($_POST["checkI"])) {
+		echo "checkI";
+		$search='-';
+		$replace='';
+		$qte=str_replace($search, $replace, $qte);
+		$qte=(int)$qte;
+
+		$reqGetQte=$bdd->prepare('select distinct quantite_en_stock from materiel where reference="'.$ref.'" and etat="'.$etat.'"');
+		$reqGetQte->execute();
+		$getQte=$reqGetQte->fetchAll(PDO::FETCH_COLUMN,0);
+
+		$qteAAjouter=($getQte[0])-($qte);
+		$reqUpdateQte=$bdd->prepare('update materiel set quantite_en_stock="'.$qteAAjouter.'" where reference="'.$ref.'"and etat="'.$etat.'"');
+		$reqUpdateQte->execute();
+	}
+
+	elseif (isset($_POST["checkA"])) {
+		echo "checkA";
+		$search='-';
+		$replace='';
+		$qte=str_replace($search, $replace, $qte);
+		$qte=(int)$qte;
+
+		$reqGetQte=$bdd->prepare('select distinct quantite_en_stock from materiel where reference="'.$ref.'" and etat="'.$etat.'"');
+		$reqGetQte->execute();
+		$getQte=$reqGetQte->fetchAll(PDO::FETCH_COLUMN,0);
+
+		$qteAAjouter=($getQte[0])+($qte);
+		$reqUpdateQte=$bdd->prepare('update materiel set quantite_en_stock="'.$qteAAjouter.'" where reference="'.$ref.'"and etat="'.$etat.'"');
+		$reqUpdateQte->execute();
+	}
+
+	else{
+		echo "qteTT";
+		ajoutQteTT();
+	}
+}	

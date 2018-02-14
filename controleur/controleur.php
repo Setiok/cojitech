@@ -73,6 +73,10 @@ require "modele/modele.php";
 
 // ----- Fin Tableau ajout-materiel
 
+	function ajoutQuantite(){
+		reqAjoutQuantite();
+}
+
 
 
 	function gestionMenuP(){
@@ -131,7 +135,7 @@ require "modele/modele.php";
 	function gestionMenuA(){
 		switch ($_GET['MenuA']) {
 			case 'Materiel':
-				include('vue/Ajout/ajout-materiel.html');
+				include('vue/Ajout/ajout-new-materiel.html');
 				break;
 
 			case 'Produit':

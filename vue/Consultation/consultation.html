@@ -5,156 +5,153 @@
 	<title>Consultation</title>
 </head>
 <body>
-</div>
 <?php testco(); //test de la connexion a la bdd 
 ?>
 <!--affichage du tableau d'ajout-->
-<div>
+<div id="consultation_ajout">
 	<table id="liste">
-				<tr class="th">
-					<td>
-						reference
-					</td>
-					<td>
-						etat
-					</td>
-					<td>
-						quantité
-					</td>
-					<td>
-						où
-					</td>
-					<td id="thCheckImputer" style="display: none;">
-						Imputer au stock ?
-					</td>
-					<td id="thCheckAjout" style="display: none;">
-						Ajouter au  stock ?
-					</td>
-				</tr>
-	<form method="post" action='controleur/ajout.php'>
-				<tr>
-					<td>
-						<input id="ref" list="reference" type="text" name="reference" autocomplete="off">
-							<datalist id="reference" >
-								<?php
-									$sth=ReturnReference();
-									foreach ($sth as $value) {
-										echo $value;
-										?>
-										<option value="<?php echo $value ?>" > <?php echo $value ?>
-										</option>
-										<?php
-									};
-								?>
-							</datalist>
-					</td>
-					<td>
-						<select id="etat" name="etat">
-								<option value="neuf"> neuf </option>
-								<option value="reconditioné"> reconditionné </option>
-						</select>
-							
-					</td>
-					<td>
-						<input list="qte" type="number" name="quantité" id="qte" autocomplete="off" required pattern="[0-9]" value="0" onchange="afficherCheckbox()">
-					</td>
-					<td>
-						<select id="ou" name="ou" onchange="afficherCheckbox();">
-							<option value="stock"> Stock</option>
-							<option value="reserve"> Reservé a un client</option>
-							<option value="SAV"> SAV</option>
-							<option value="test"> A tester</option>
-						</select>
-					</td>
-					<td id="tdCheckImputer" style="display: none;">
-						<input type="checkbox" name="checkI" id="checkImputer" value="on">
-					</td>
-					<td id="tdCheckAjout" style="display: none;">
-						<input type="checkbox" name="checkA" id="checkAjout" value="on">
-					</td>
-				</tr>
-	</table>
-</div>
+		<tr class="th">
+			<td>
+				reference
+			</td>
+			<td>
+				etat
+			</td>
+			<td>
+				quantité
+			</td>
+			<td>
+				où
+			</td>
+			<td id="thCheckImputer" style="display: none;">
+				Imputer au stock ?
+			</td>
+			<td id="thCheckAjout" style="display: none;">
+				Ajouter au  stock ?
+			</td>
+		</tr>
+		<form method="post" action='controleur/ajout.php'>
+			<tr>
+				<td>
+					<input id="ref" list="reference" type="text" name="reference" autocomplete="off">
+					<datalist id="reference" >
+						<?php
+						$sth=ReturnReference();
+						foreach ($sth as $value) {
+							echo $value;
+							?>
+							<option value="<?php echo $value ?>" > <?php echo $value ?>
+							</option>
+							<?php
+						};
+						?>
+					</datalist>
+				</td>
+				<td>
+					<select id="etat" name="etat">
+						<option value="neuf"> neuf </option>
+						<option value="reconditioné"> reconditionné </option>
+					</select>
+
+				</td>
+				<td>
+					<input list="qte" type="number" name="quantité" id="qte" autocomplete="off" required pattern="[0-9]" value="0" onchange="afficherCheckbox()">
+				</td>
+				<td>
+					<select id="ou" name="ou" onchange="afficherCheckbox();">
+						<option value="stock"> Stock</option>
+						<option value="reserve"> Reservé a un client</option>
+						<option value="SAV"> SAV</option>
+						<option value="test"> A tester</option>
+					</select>
+				</td>
+				<td id="tdCheckImputer" style="display: none;">
+					<input type="checkbox" name="checkI" id="checkImputer" value="on">
+				</td>
+				<td id="tdCheckAjout" style="display: none;">
+					<input type="checkbox" name="checkA" id="checkAjout" value="on">
+				</td>
+			</tr>
+		</table>
 		<button type="submit" name="btn1" value="on">Modifier la quantité</button>
 		<button type="submit" name="btn2" value="on">Ajouter ou modifier se materiel</button>
 	</form>
 
 
-		<script type="text/javascript" language="JavaScript">
+	<script type="text/javascript" language="JavaScript">
 
 
-			function afficherCheckbox(){
-				
-				var ou=document.getElementById("ou").value;
-				var qte=document.getElementById("qte").value;
+		function afficherCheckbox(){
 
-				if (ou=="stock") {
-					document.getElementById("thCheckImputer").style.display="none";
-					document.getElementById("tdCheckImputer").style.display="none";
-					document.getElementById("thCheckAjout").style.display="none";
-					document.getElementById("tdCheckAjout").style.display="none";
-					document.getElementById("checkImputer").checked=false;
-					document.getElementById("checkAjout").checked=false;
-				}
-				else{
-					if (qte<0) {
+			var ou=document.getElementById("ou").value;
+			var qte=document.getElementById("qte").value;
+
+			if (ou=="stock") {
+				document.getElementById("thCheckImputer").style.display="none";
+				document.getElementById("tdCheckImputer").style.display="none";
+				document.getElementById("thCheckAjout").style.display="none";
+				document.getElementById("tdCheckAjout").style.display="none";
+				document.getElementById("checkImputer").checked=false;
+				document.getElementById("checkAjout").checked=false;
+			}
+			else{
+				if (qte<0) {
 					document.getElementById("thCheckAjout").style.display="";
 					document.getElementById("tdCheckAjout").style.display="";
 					document.getElementById("thCheckImputer").style.display="none";
 					document.getElementById("tdCheckImputer").style.display="none";
 					document.getElementById("checkImputer").checked=false;
-					}
-					else{
+				}
+				else{
 					document.getElementById("thCheckImputer").style.display="";
 					document.getElementById("tdCheckImputer").style.display="";
 					document.getElementById("thCheckAjout").style.display="none";
 					document.getElementById("tdCheckAjout").style.display="none";
 					document.getElementById("checkAjout").checked=false;
-					}
-					
 				}
+
 			}
-		</script>
+		}
+	</script>
+</div>
+<!-- fin affichage du menu ajout -->
 
-		<!-- fin affichage du menu ajout -->
-
-		
-	<div id="contenu"  style="overflow: auto;"> <!--contenu unique de la page consultation -->
-			<?php
+<!--contenu unique de la page consultation -->
+<div id="contenu"  style="overflow: auto;"> 
+	<?php
 				afficherMenu2(); //affichage du menu consultation
-			?>
-		
-			<!-- affichage de la liste de tous les materiels par defaut ou d'une catégorie en fonction du sous-menu -->
-			<table id=table>
-			<?php
+				?>
+
+				<!-- affichage de la liste de tous les materiels par defaut ou d'une catégorie en fonction du sous-menu -->
+				<table id=table>
+					<?php
 				$sth=afficherMateriel(); // recuperation du tableau de données
-				//var_dump($sth); //pour test si il y a un resultat effacer les // du debut
 				$i=false;
 				$cpt=0;
 				foreach ($sth as $table){ //boucle pour l'afichage des données
-					if ($i==false) { 
-						?><tr class="th">
-							<td></td>
-							<?php
+				if ($i==false) { 
+					?><tr class="th">
+						<td></td>
+						<?php
 						foreach($table as $key => $value){
 							?>
-								<td>
-									<?php
-									/* remplacement des _ par un espace */
-									$search = '_';
-									$replace = ' ';
-									$key= str_replace($search, $replace, $key);
-									/* fin du remplacement*/
-									echo $key;
-									?>
-								</td>
+							<td>
+								<?php
+								/* remplacement des _ par un espace */
+								$search = '_';
+								$replace = ' ';
+								$key= str_replace($search, $replace, $key);
+								/* fin du remplacement*/
+								echo $key;
+								?>
+							</td>
 							
-						<?php 
-						$i=true;
+							<?php 
+							$i=true;
 						};
 						?></tr><?php
 					};
-					?><tr onclick="selectLigne(<?php echo $cpt ?>)"><?php
+					?><tr id="ligne" onclick="selectLigne(<?php echo $cpt ?>)"><?php
 					
 					foreach($table as $key => $value){
 						if ($key=="reference") {
@@ -162,38 +159,39 @@
 							<td>
 								<input type="radio" name="point" value=<?php echo $value ?> id=<?php echo $cpt; ?>  >
 							</td>
-						<?php	
+							<?php	
 						};
 						if ($key=="etat") {
 							
 						}
 						?>
-							<td>
-								<label for=<?php echo $cpt; ?> >
+						<td>
+							<label for=<?php echo $cpt; ?> >
 								<?php
-									echo $value;
+								echo $value;
 								?>
-								</label>
-							</td>
-					<?php
+							</label>
+						</td>
+						<?php
 					};
 					$cpt++;
 					?></tr><?php 
 				}; 
 				?>
 
-			
+
 			</table>
 		</div>
 
-<script type="text/javascript">
-	function selectLigne($compteur){
-		document.getElementById($compteur).checked=true;
-		document.getElementById("ref").value=document.getElementById($compteur).value;
-	}
-</script>
+		<script type="text/javascript">
+			function selectLigne($compteur){
+				document.getElementById($compteur).checked=true;
+				document.getElementById("ref").value=document.getElementById($compteur).value;
+			}
+
+		</script>
 
 
 
-</body>
-</html>
+	</body>
+	</html>

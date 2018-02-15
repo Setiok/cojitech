@@ -87,6 +87,22 @@ function listeMaterielTri($order){
 		}
 }; */
 
+function getUnMateriel($ref,$etat){
+	try {
+	$source = 'mysql:host=127.0.0.1;dbname=cojitech;charset=utf8';
+	$user = 'root';
+	$mdp = '';
+	$bdd = new PDO ($source, $user, $mdp);
+
+	$requete=$bdd->prepare("select distinct * from materiel where reference='".$ref."' and etat='".$etat."'");
+	$requete->execute();
+	$values=$requete->fetch();
+	return $values;
+	} catch (PDOException $e) {
+		die('erreur base de donnée');
+	}
+}
+
 function getRef(){
 	$source = 'mysql:host=127.0.0.1;dbname=cojitech;charset=utf8';
 	$user = 'root';

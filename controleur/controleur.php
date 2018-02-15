@@ -36,6 +36,35 @@ require "modele/modele.php";
 		require "vue/Consultation/ajout-materiel.html";
 	}
 
+	function getValuesMateriel(){
+		$ref=$_SESSION['temp'];
+	$etat=$_SESSION['temp2'];
+	unset($_SESSION['temp']);
+	unset($_SESSION['temp2']);
+
+	$values=getUnMateriel($ref,$etat);
+
+	$design=$values[2];
+	$marque=$values[3];
+	$produit=$values[4];
+	$fournisseur=$values[5];
+	$qteMin=$values[7];
+	$emplacement=$values[14];
+
+	?>
+	<script type="text/javascript">
+		document.getElementById('ref').value="<?php echo $ref; ?>";
+		document.getElementById('design').value="<?php echo $design; ?>";
+		document.getElementById('marque').value="<?php echo $marque; ?>";
+		document.getElementById('produit').value="<?php echo $produit; ?>";
+		document.getElementById('fournisseur').value="<?php echo $fournisseur; ?>";
+		document.getElementById('etat').value="<?php echo $etat; ?>";
+		document.getElementById('qte').value="<?php echo $qteMin; ?>";
+		document.getElementById('emplacement').value="<?php echo $emplacement; ?>";
+	</script>
+<?php
+	}
+
 
 //Tableau ajout-materiel
 	function ReturnReference(){

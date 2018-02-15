@@ -3,114 +3,84 @@
 <!--affichage du tableau d'ajout-->
 <div>
 	<table id="liste">
-				<tr class="th">
-					<td>
-						reference
-					</td>
-					<td>
-						désignation
-					</td>
-					<td>
-						marque
-					</td>
-					<td>
-						produit
-					</td>
-					<td>
-						fournisseur
-					</td>
-					<td>
-						etat
-					</td>
-					<td>
-						quantité_minimal
-					</td>
-					<td>
-						emplacement
-					</td>
-				</tr>
-	<form method="post" action='controleur/ajout.php'>
-				<tr>
-					<td>
-						<input id="ref" list="reference" type="text" name="reference" autocomplete="off">
-							<datalist id="reference" >
-								<?php
-									$sth=ReturnReference();
-									foreach ($sth as $value) {
-										echo $value;
-										?>
-										<option value="<?php echo $value ?>" > <?php echo $value ?>
-										</option>
-										<?php
-									};
-								?>
-							</datalist>
-					</td>
-					<td>
-						<select id="etat" name="etat">
-								<option value="neuf"> neuf </option>
-								<option value="reconditioné"> reconditionné </option>
-						</select>
-							
-					</td>
-					<td>
-						<input list="qte" type="number" name="quantité" id="qte" autocomplete="off" required pattern="[0-9]" value="0" onchange="afficherCheckbox()">
-					</td>
-					<td>
-						<select id="ou" name="ou" onchange="afficherCheckbox();">
-							<option value="stock"> Stock</option>
-							<option value="reserve"> Reservé a un client</option>
-							<option value="SAV"> SAV</option>
-							<option value="test"> A tester</option>
-						</select>
-					</td>
-					<td id="tdCheckImputer" style="display: none;">
-						<input type="checkbox" name="checkI" id="checkImputer" value="on">
-					</td>
-					<td id="tdCheckAjout" style="display: none;">
-						<input type="checkbox" name="checkA" id="checkAjout" value="on">
-					</td>
-				</tr>
-	</table>
-</div>
-		<button type="submit" name="ajouter" value="on">Ajouter/Modifier</button>
-	</form>
+		<tr class="th">
+			<td>
+				reference
+			</td>
+			<td>
+				désignation
+			</td>
+			<td>
+				marque
+			</td>
+			<td>
+				produit
+			</td>
+			<td>
+				fournisseur
+			</td>
+			<td>
+				etat
+			</td>
+			<td>
+				quantité_minimal
+			</td>
+			<td>
+				emplacement
+			</td>
+		</tr>
+		<form method="post" action='controleur/ajout.php'>
+			<tr>
+				<td>
+					<input id="ref" list="reference" type="text" name="reference" autocomplete="off">
+					<datalist id="reference" >
+						<?php
+						$sth=ReturnReference();
+						foreach ($sth as $value) {
+							echo $value;
+							?>
+							<option value="<?php echo $value ?>" > <?php echo $value ?>
+							</option>
+							<?php
+						};
+						?>
+					</datalist>
+				</td>
+				<td>
+					<textarea id="design" name="designation"></textarea>
+				</td>
+				<td>
+					<input id="marque" type="text" name="marque">
+				</td>
+				<td>
+					<input id="produit" type="text" name="produit">
+				</td>
+				<td>
+					<input id="fournisseur" type="text" name="fournisseur">
+				</td>
+				<td>
+					<select id="etat" name="etat">
+						<option value="neuf"> neuf </option>
+						<option value="reconditioné"> reconditionné </option>
+					</select>
 
+				</td>
+				<td>
+					<input list="qte" type="number" name="quantitéMin" id="qte" autocomplete="off" required pattern="[0-9]" value="">
+				</td>
+				<td>
+					<input id="emplacement" type="text" name="emplacement">
+				</td>
+			</tr>
+		</table>
+	</div>
+	<button type="submit" name="ajouter" value="on">Ajouter/Modifier</button>
+</form>
 
-		<script type="text/javascript" language="JavaScript">
-
-
-			function afficherCheckbox(){
-				
-				var ou=document.getElementById("ou").value;
-				var qte=document.getElementById("qte").value;
-
-				if (ou=="stock") {
-					document.getElementById("thCheckImputer").style.display="none";
-					document.getElementById("tdCheckImputer").style.display="none";
-					document.getElementById("thCheckAjout").style.display="none";
-					document.getElementById("tdCheckAjout").style.display="none";
-					document.getElementById("checkImputer").checked=false;
-					document.getElementById("checkAjout").checked=false;
-				}
-				else{
-					if (qte<0) {
-					document.getElementById("thCheckAjout").style.display="";
-					document.getElementById("tdCheckAjout").style.display="";
-					document.getElementById("thCheckImputer").style.display="none";
-					document.getElementById("tdCheckImputer").style.display="none";
-					document.getElementById("checkImputer").checked=false;
-					}
-					else{
-					document.getElementById("thCheckImputer").style.display="";
-					document.getElementById("tdCheckImputer").style.display="";
-					document.getElementById("thCheckAjout").style.display="none";
-					document.getElementById("tdCheckAjout").style.display="none";
-					document.getElementById("checkAjout").checked=false;
-					}
-					
-				}
-			}
-		</script>
-
+<?php 
+if (isset($_SESSION['temp'])) {
+	getValuesMateriel();
+	
+}
+?>
 		<!-- fin affichage du menu ajout -->

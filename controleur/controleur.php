@@ -37,7 +37,7 @@ require "modele/modele.php";
 	}
 
 	function getValuesMateriel(){
-		$ref=$_SESSION['temp'];
+	$ref=$_SESSION['temp'];
 	$etat=$_SESSION['temp2'];
 	unset($_SESSION['temp']);
 	unset($_SESSION['temp2']);
@@ -50,6 +50,7 @@ require "modele/modele.php";
 	$fournisseur=$values[5];
 	$qteMin=$values[7];
 	$emplacement=$values[14];
+	$qteStock=$values[8];
 
 	?>
 	<script type="text/javascript">
@@ -61,6 +62,7 @@ require "modele/modele.php";
 		document.getElementById('etat').value="<?php echo $etat; ?>";
 		document.getElementById('qte').value="<?php echo $qteMin; ?>";
 		document.getElementById('emplacement').value="<?php echo $emplacement; ?>";
+		document.getElementById('qteStock').value="<?php echo $qteStock; ?>";
 	</script>
 <?php
 	}

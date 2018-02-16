@@ -7,29 +7,32 @@
 <body>
 <?php testco(); //test de la connexion a la bdd 
 ?>
+<h1>Consultation</h1>
 <!--affichage du tableau d'ajout-->
 <div id="consultation_ajout">
 	<table id="liste">
-		<tr class="th">
-			<td>
-				reference
-			</td>
-			<td>
-				etat
-			</td>
-			<td>
-				quantité
-			</td>
-			<td>
-				où
-			</td>
-			<td id="thCheckImputer" style="display: none;">
-				Imputer au stock ?
-			</td>
-			<td id="thCheckAjout" style="display: none;">
-				Ajouter au  stock ?
-			</td>
-		</tr>
+		<th>
+			<tr class="th">
+				<th>
+					reference
+				</th>
+				<th>
+					etat
+				</th>
+				<th>
+					quantité
+				</th>
+				<th>
+					où
+				</th>
+				<th id="thCheckImputer" style="display: none;">
+					Imputer au stock ?
+				</th>
+				<th id="thCheckAjout" style="display: none;">
+					Ajouter au  stock ?
+				</th>
+			</tr>
+		</th>
 		<form method="post" action='controleur/ajout.php'>
 			<tr>
 				<td>
@@ -116,82 +119,97 @@
 </div>
 <!-- fin affichage du menu ajout -->
 
+
+
 <!--contenu unique de la page consultation -->
 <div id="contenu"  style="overflow: auto;"> 
-	<?php
-				afficherMenu2(); //affichage du menu consultation
-				?>
+	<div class="search">
+		<form>
+			<input type="text" name="recherche">
+			<select onchange="">
+				<option>reference</option>
+				<option>désignation</option>
+				<option>marque</option>
+				<option>produit</option>
+				<option></option>
+			</select>
+			<input type="submit" name="">
 
-				<!-- affichage de la liste de tous les materiels par defaut ou d'une catégorie en fonction du sous-menu -->
-				<table id=table>
+		</form>
+	</div>
+	<!-- affichage de la liste de tous les materiels par defaut ou d'une catégorie en fonction du sous-menu -->
+	<table id=table>
+		<?php 
+			afficherMenu2(); //affichage du menu consultation
+			?>
+			<?php
+			$sth=afficherMateriel(); // recuperation du tableau de données
+			$i=false;
+			$cpt=0;
+			foreach ($sth as $table){ //boucle pour l'afichage des données
+			if ($i==false) { 
+				?><tr class="th">
+					<td></td>
 					<?php
-				$sth=afficherMateriel(); // recuperation du tableau de données
-				$i=false;
-				$cpt=0;
-				foreach ($sth as $table){ //boucle pour l'afichage des données
-				if ($i==false) { 
-					?><tr class="th">
-						<td></td>
-						<?php
-						foreach($table as $key => $value){
-							?>
-							<td>
-								<?php
-								/* remplacement des _ par un espace */
-								$search = '_';
-								$replace = ' ';
-								$key= str_replace($search, $replace, $key);
-								/* fin du remplacement*/
-								echo $key;
-								?>
-							</td>
-							
-							<?php 
-							$i=true;
-						};
-						?></tr><?php
-					};
-					?><tr id="ligne" onclick="selectLigne(<?php echo $cpt ?>)"><?php
-					
 					foreach($table as $key => $value){
-						if ($key=="reference") {
+						?>
+						<th>
+							<?php
+							/* remplacement des _ par un espace */
+							$search = '_';
+							$replace = ' ';
+							$key= str_replace($search, $replace, $key);
+							/* fin du remplacement*/
+							echo $key;
 							?>
-							<td>
-								<input type="radio" name="point" value=<?php echo $value ?> id=<?php echo $cpt; ?>  >
-							</td>
-							<?php	
-						};
-						if ($key=="etat") {
-							
-						}
+						</th>
+
+						<?php 
+						$i=true;
+					};
+					?></tr><?php
+				};
+				?><tr id="ligne" onclick="selectLigne(<?php echo $cpt ?>)"><?php
+
+				foreach($table as $key => $value){
+					if ($key=="reference") {
 						?>
 						<td>
-							<label for=<?php echo $cpt; ?> >
-								<?php
-								echo $value;
-								?>
-							</label>
+							<input type="radio" name="point" value=<?php echo $value ?> id=<?php echo $cpt; ?>  >
 						</td>
-						<?php
+						<?php	
 					};
-					$cpt++;
-					?></tr><?php 
-				}; 
-				?>
+					if ($key=="etat") {
+
+					}
+					?>
+					<td>
+						<label for=<?php echo $cpt; ?> >
+							<?php
+							echo $value;
+							?>
+						</label>
+					</td>
+					<?php
+				};
+				$cpt++;
+				?></tr><?php 
+			}; 
+			?>
 
 
-			</table>
-		</div>
+		</table>
+	</div>
 
-		<script type="text/javascript">
-			function selectLigne($compteur){
-				document.getElementById($compteur).checked=true;
-				document.getElementById("ref").value=document.getElementById($compteur).value;
-			}
+	<script type="text/javascript">
+		function selectLigne($compteur){
+			document.getElementById($compteur).checked=true;
+			document.getElementById("ref").value=document.getElementById($compteur).value;
+		}
 
-		</script>
+	</script>
 
 
 
-	</body>
-	</html>
+</body>
+</html>

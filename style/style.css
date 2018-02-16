@@ -1,116 +1,65 @@
-/*table {margin:auto;border-collapse:collapse;cursor:pointer;}
-td {padding:15px 60px;border:1px solid #000;}
-tr.selected {color:#fff;background:#444 !important;}
-tr:hover {background:#eee;}
-a {display:table;margin:20px auto;padding:10px 40px;text-decoration:none;color:#fff;background:#09f;}
-*/
-
 @font-face{
 	font-family: futura;
 	src:url("_typo/futura.ttf") format("truetype");
 }
-
+@font-face{
+	font-family: futuraBold;
+	src:url("_typo/futura Bold.ttf") format("truetype");
+}
 
 body {
-	background: white;
 	width: 100%;
 	height: 100%;
 	font-family: futura, arial;
+	background-image: url("_Logo/jpg et png/Logo-.png");
+	background-size: 200px 63px;
+	background-repeat: no-repeat;
+	background-position: top right;
 }
 
+/*-----------Menus-----------*/
+
+#menu{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+/*---------Fin Menus----------*/
+
+/*-----------bordure gauche---------*/
+#bordureG{
+	width:75px;
+	height: 100%;
+	background-image: url("image/Bandeau fin.jpg");
+	background-repeat: no-repeat;
+	background-attachment: scroll;
+	float: left;
+	margin-right: 10px;
+}
+
+
+
+/*-----------tableau-------------*/
 #consultation_ajout table{
 	border: 0px;
 	border: medium solid #0009;
 	border-collapse: collapse;
+	text-align: center;
 }
-#consultation_ajout td{
+#consultation_ajout td, #consultation_ajout th{
 	border-bottom: thin solid #0009;
 	border-right: thin solid #0009;
 }
 
-
-/*
-h1{
-	text-align: center;
-}
-
-#menu{
-	list-style-type: none;
-	text-align: left;
-	border: 0px;
-	width: 10%;
-	height: 100%;
-	position: absolute;
-
-}
-
-#contenu{
-	text-align: center;
-	margin-top: 10%;
-	position: absolute;
-	width: 100%;
-	height: 100%;
-}
-*/
 #table{
 	border: medium solid #0009;
-	position: relative;
-	margin-top: 10%;
 	border-collapse: collapse;
 	width: 98%;
 	text-align: center;
 }
 
-#table td{
+#table td ,#table th{
 	border-bottom: thin solid #0009;
 	border-right: thin solid #0009;
-	width: 10%;
 }
-
-#table input,select{
-	width: 100%;
-	height: 100%;
-}
-/*#liste th{
-	border: medium solid #000000;
-}
-*/
-/*
-.th{
-	font-size: 16px;
-	font-weight: bold;
-	border: medium solid #000000;
-}
-
-/*----------------menu2--------------*//*
-#menu2 ul {
- padding:0;
- margin:0;
- list-style-type:none;
- margin-left:33%;
- }
-
-#menu2 li {
- margin-left:2px;
- float:left; /*pour IE*//*
- }
-
-#menu2 ul li a {
- /* display:block;
- float:left; */   /*
- width:100px;
- background-color:#6495ED;
- color:black;
- text-decoration:none;
- text-align:center;
- padding:5px;
- border:2px solid;
- /*pour avoir un effet "outset" avec IE :*//*
- border-color:#DCDCDC #696969 #696969 #DCDCDC;
- }
-
-#menu2 ul li a:hover {
- background-color:#D3D3D3;
- border-color:#696969 #DCDCDC #DCDCDC #696969;
- }
-/*--------------Fin menu2--------------*/

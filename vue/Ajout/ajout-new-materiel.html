@@ -28,6 +28,9 @@
 			<td>
 				emplacement
 			</td>
+			<td>
+				Quantitée en stock
+			</td>
 		</tr>
 		<form method="post" action='controleur/ajout.php'>
 			<tr>
@@ -66,10 +69,13 @@
 
 				</td>
 				<td>
-					<input list="qte" type="number" name="quantitéMin" id="qte" autocomplete="off" required pattern="[0-9]" value="">
+					<input list="qte" type="number" name="quantitéMin" id="qte" autocomplete="off" required pattern="[0-9]" value="0">
 				</td>
 				<td>
 					<input id="emplacement" type="text" name="emplacement">
+				</td>
+				<td>
+					<input id="qteStock" type="number" name="qteStock" value="0">
 				</td>
 			</tr>
 		</table>
@@ -80,7 +86,6 @@
 <?php 
 if (isset($_SESSION['temp'])) {
 	getValuesMateriel();
-	
 }
 ?>
 		<!-- fin affichage du menu ajout -->

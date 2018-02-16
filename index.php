@@ -1,4 +1,5 @@
 <!-- Systeme MVC -->
+<link rel="stylesheet" type="text/css" href="style/normalize.css">
 <link rel="stylesheet" type="text/css" href="style/style.css">
 <script src="controleur/jquery-3.3.1.min.js"></script>
 <script type="text/javascript"></script>

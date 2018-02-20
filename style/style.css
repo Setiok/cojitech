@@ -25,6 +25,12 @@ body {
 	padding: 0;
 }
 
+#menu2{
+	list-style: none;
+	margin: 0;
+	padding-left: 55%;
+}
+
 /*---------Fin Menus----------*/
 
 /*-----------bordure gauche---------*/
@@ -41,6 +47,9 @@ body {
 
 
 /*-----------tableau-------------*/
+#consultation_ajout{
+	margin-bottom: 2em;
+}
 #consultation_ajout table{
 	border: 0px;
 	border: medium solid #0009;
@@ -59,7 +68,24 @@ body {
 	text-align: center;
 }
 
+#tableau{
+	min-height:60px;
+	height:416px;
+	min-width:60px;
+	width: auto;
+	overflow:scroll;
+}
+
 #table td ,#table th{
 	border-bottom: thin solid #0009;
 	border-right: thin solid #0009;
+	min-width: 10px;
 }
+
+/* barre de recherche */
+.search{
+	width: auto;
+	max-width: 555px;
+	position: absolute;
+}
+/* fin barre de recherche */

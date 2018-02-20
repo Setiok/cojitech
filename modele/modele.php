@@ -26,7 +26,7 @@ function listeMateriel(){
 	$mdp = '';
 	$bdd = new PDO ($source, $user, $mdp);
 	try{
-		$resultats = $bdd->prepare("select reference, designation, marque, produit, etat, quantite_total, quantite_minimal, quantite_en_stock, quantite_reserve, quantite_en_test, quantite_en_SAV, commande, fournisseur, emplacement from MATERIEL order by reference");
+		$resultats = $bdd->prepare("select reference, designation, marque, produit, etat, quantite_en_stock, quantite_minimal, fournisseur, emplacement from MATERIEL order by designation");
 		$resultats->execute();
 		$st = $resultats->fetchAll(PDO::FETCH_ASSOC);
 		return $st;
@@ -38,33 +38,62 @@ function listeMateriel(){
 };
 
 function listeMaterielTri($order){
-	$source = 'mysql:host=127.0.0.1;dbname=cojitech;charset=utf8';
-	$user = 'root';
-	$mdp = '';
-	$bdd = new PDO ($source, $user, $mdp);
-	if ($order=="Stock") {
-		$order= "quantite_en_stock";
-	}
-	elseif ($order== "Reserve"){
-		$order="quantite_reserve";
-	}
-	elseif ($order=="SAV") {
-		$order="quantite_en_SAV";
-	}
-	elseif ($order=="Test") {
-		$order="quantite_en_test";
-	}
-
 	try{
-		$resultats = $bdd->prepare("select reference, designation, marque, produit, etat, quantite_total, quantite_minimal, quantite_en_stock, quantite_reserve, quantite_en_test, quantite_en_SAV, commande, fournisseur, emplacement  from MATERIEL where (".$order." > 0)");
+		$source = 'mysql:host=127.0.0.1;dbname=cojitech;charset=utf8';
+		$user = 'root';
+		$mdp = '';
+		$bdd = new PDO ($source, $user, $mdp);
+		if ($order=="Stock") {
+			$order= "quantite_en_stock";
+
+			$resultats = $bdd->prepare("select reference, designation, marque, produit, etat, quantite_en_stock, quantite_minimal, fournisseur, emplacement from MATERIEL where (".$order." > 0) order by designation ");
+			$resultats->execute();
+			$st = $resultats->fetchAll(PDO::FETCH_ASSOC);
+			//var_dump($st);
+			return $st;
+		}
+	}
+		catch(PDOException $e){
+			die('erreur de requete a la bdd :'.$resultats.'');
+		}
+	};
+
+	function getRecherche(){
+	try {
+		$source = 'mysql:host=127.0.0.1;dbname=cojitech;charset=utf8';
+		$user = 'root';
+		$mdp = '';
+		$bdd = new PDO ($source, $user, $mdp);
+		$text=$_SESSION["searchTemp"];
+		$ou=$_SESSION['searchTemp2'];
+
+
+		if ($ou=="Désignation") {
+			$resultats=$bdd->prepare("select reference, designation, marque, produit, etat, quantite_en_stock, quantite_minimal, fournisseur, emplacement from materiel where designation like '%".$text."%' order by designation ") or die(mysql_error());
+			//var_dump($resultats);
+		}
+		elseif ($ou=="Référence") {
+			$resultats=$bdd->prepare("select reference, designation, marque, produit, etat, quantite_en_stock, quantite_minimal, fournisseur, emplacement from materiel where reference like '%".$text."%' order by reference ") or die(mysql_error());
+
+		}
+		elseif ($ou=="Constructeur") {
+			$resultats=$bdd->prepare("select reference, designation, marque, produit, etat, quantite_en_stock, quantite_minimal, fournisseur, emplacement from materiel where marque like '%".$text."%' order by marque ") or die(mysql_error());
+
+		}
+		elseif ($ou=="Famille") {
+			$resultats=$bdd->prepare("select reference, designation, marque, produit, etat, quantite_en_stock, quantite_minimal, fournisseur, emplacement from materiel where produit like '%".$text."%' order by produit ") or die(mysql_error());
+
+		}
+
 		$resultats->execute();
-		$st = $resultats->fetchAll(PDO::FETCH_ASSOC);
+		$st=$resultats->fetchAll(PDO::FETCH_ASSOC);
 		return $st;
+
+
+	} catch (PDOException $e) {
+		
 	}
-	catch(PDOException $e){
-		die('erreur de requete a la bdd :'.$resultats.'');
 	}
-};
 
 // ----- fin liste des materiels
 
@@ -243,6 +272,7 @@ function listeMaterielTri($order){
 			$countRef = $bdd->prepare("select count(reference) from materiel where reference='".$ref."'");
 			$countRef->execute();
 			$nbRef=$countRef->fetchAll(PDO::FETCH_COLUMN,0);
+			//var_dump($nbRef); // pour test
 
 
 			if ($nbRef[0]==0) { //----- si ref = 0 alors on ajoute un nouveau materiel avec cette nouvelle ref
@@ -658,72 +688,34 @@ function ajoutQteTT(){
 
 //fonction pour modif la qte d'un materiel (page consultation)
 function reqAjoutQuantite(){
+	try{
 	$source = 'mysql:host=127.0.0.1;dbname=cojitech;charset=utf8';
 	$user = 'root';
 	$mdp = '';
 	$bdd = new PDO ($source, $user, $mdp);
 
-	$ref=$_POST['reference'];
+	$design=$_POST['designation'];
 	$etat=$_POST['etat'];
-	$ou=$_POST['ou'];
 	$qte=$_POST['quantité'];
 
-	echo "$ou";
+	$reqGetQte=$bdd->prepare('select distinct quantite_en_stock from materiel where designation="'.$design.'" and etat="'.$etat.'"');
+	$reqGetQte->execute();
+	$getQte=$reqGetQte->fetchAll(PDO::FETCH_COLUMN,0);
+	$qteAAjouter=$getQte[0]+$qte;
 
-	if ($ou=="stock") {
-		$reqGetQte=$bdd->prepare('select distinct quantite_en_stock from materiel where reference="'.$ref.'" and etat="'.$etat.'"');
-		$reqGetQte->execute();
-		$getQte=$reqGetQte->fetchAll(PDO::FETCH_COLUMN,0);
-		$qteAAjouter=$getQte[0]+$qte;
+	//echo $getQte[0],"+",$qte,"=",$qteAAjouter;
 
-		echo $getQte[0],"+",$qte,"=",$qteAAjouter;
-
-		$reqUpdateQte=$bdd->prepare('update materiel set quantite_en_stock="'.$qteAAjouter.'" where reference="'.$ref.'" and etat="'.$etat.'"');
-		$reqUpdateQte->execute();
-	}
-
-	elseif ($ou=="reserve") {
-		$reqGetQte=$bdd->prepare('select distinct quantite_reserve from materiel where reference="'.$ref.'" and etat="'.$etat.'"');
-		$reqGetQte->execute();
-		$getQte=$reqGetQte->fetchAll(PDO::FETCH_COLUMN,0);
-
-		$qteAAjouter=$getQte[0]+$qte;
-
-		$reqUpdateQte=$bdd->prepare('update materiel set quantite_reserve="'.$qteAAjouter.'" where reference="'.$ref.'" and etat="'.$etat.'"');
-		$reqUpdateQte->execute();
-	}
-
-	elseif ($ou=="SAV") {
-		$reqGetQte=$bdd->prepare('select distinct quantite_en_SAV from materiel where reference="'.$ref.'" and etat="'.$etat.'"');
-		$reqGetQte->execute();
-		$getQte=$reqGetQte->fetchAll(PDO::FETCH_COLUMN,0);
-
-		$qteAAjouter=$getQte[0]+$qte;
-
-		$reqUpdateQte=$bdd->prepare('update materiel set quantite_en_SAV="'.$qteAAjouter.'" where reference="'.$ref.'" and etat="'.$etat.'"');
-		$reqUpdateQte->execute();
-	}
-
-	elseif ($ou=="test") {
-		$reqGetQte=$bdd->prepare('select distinct quantite_en_test from materiel where reference="'.$ref.'" and etat="'.$etat.'"');
-		$reqGetQte->execute();
-		$getQte=$reqGetQte->fetchAll(PDO::FETCH_COLUMN,0);
-
-		$qteAAjouter=$getQte[0]+$qte;
-		$reqUpdateQte=$bdd->prepare('update materiel set quantite_en_test="'.$qteAAjouter.'" where reference="'.$ref.'" and etat="'.$etat.'"');
-		$reqUpdateQte->execute();
-	}
-
-	else{
-		echo "Erreur de la valeur ou = '".$ou."'";
+	$reqUpdateQte=$bdd->prepare('update materiel set quantite_en_stock="'.$qteAAjouter.'" where designation="'.$design.'" and etat="'.$etat.'"');
+	$reqUpdateQte->execute();
+	
+	return true;
+}
+	catch (PDOException $e){
 		return false;
 	}
-
-	verifCheck($ref,$qte,$etat,$bdd);
-	return true;
 };
 
-function verifCheck($ref,$qte,$etat,$bdd){
+/*function verifCheck($ref,$qte,$etat,$bdd){
 
 	if (isset($_POST["checkI"])) {
 		echo "checkI";
@@ -761,4 +753,4 @@ function verifCheck($ref,$qte,$etat,$bdd){
 		echo "qteTT";
 		ajoutQteTT();
 	}
-}	
+}*/

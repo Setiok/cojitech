@@ -29,6 +29,7 @@ require "modele/modele.php";
 
 	function afficherMaterielTri(){
 		$page=$_SESSION['page'];
+		unset($_SESSION['page']);
 		return listeMaterielTri($page);
 	}
 
@@ -65,6 +66,11 @@ require "modele/modele.php";
 		document.getElementById('qteStock').value="<?php echo $qteStock; ?>";
 	</script>
 <?php
+	}
+
+	function afficherMaterielRechercher(){
+		$st=getRecherche();
+		return $st;
 	}
 
 
@@ -117,10 +123,6 @@ require "modele/modele.php";
 	            include('vue/consultation/consultation.html');
 	            break;
 
-	        case 'Modification':
-	        	include('vue/modification.html');
-	        	break;
-
 	        case 'Ajout':
 	        	include('vue/Ajout/ajout.html');
 	        	break;
@@ -139,22 +141,7 @@ require "modele/modele.php";
 		switch ($_GET['MenuC']) {
 			case 'Stock':
 				$_SESSION['page']='Stock';
-				include('vue/consultation/consultationTri.html');
-				break;
-
-			case 'reserve':
-				$_SESSION['page']='Reserve';
-				include('vue/consultation/consultationTri.html');
-				break;
-			
-			case 'SAV':
-				$_SESSION['page']='SAV';
-				include('vue/consultation/consultationTri.html');
-				break;
-
-			case 'Test':
-				$_SESSION['page']='Test';
-				include('vue/consultation/consultationTri.html');
+				include('vue/consultation/consultation.html');
 				break;
 
 			default:

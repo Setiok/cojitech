@@ -1,44 +1,47 @@
 <?php require "vue/Ajout/ajout.html"; ?>
 
 <!--affichage du tableau d'ajout-->
-<div>
-	<table id="liste">
+<div id="Ajout">
+	<table id="table">
 		<tr class="th">
-			<td>
+			<th>
 				reference
-			</td>
-			<td>
+			</th>
+			<th>
 				désignation
-			</td>
-			<td>
+			</th>
+			<th>
 				marque
-			</td>
-			<td>
+			</th>
+			<th>
 				produit
-			</td>
-			<td>
+			</th>
+			<th>
 				fournisseur
-			</td>
-			<td>
+			</th>
+			<th>
 				etat
-			</td>
-			<td>
+			</th>
+			<th>
 				quantité_minimal
-			</td>
-			<td>
+			</th>
+			<th>
 				emplacement
-			</td>
-			<td>
-				Quantitée en stock
-			</td>
+			</th>
+			<th>
+				Qte Stock
+			</th>
 		</tr>
 		<form method="post" action='controleur/ajout.php'>
 			<tr>
 				<td>
-					<input id="ref" list="reference" type="text" name="reference" autocomplete="off">
-					<datalist id="reference" >
+					<input type="text" name="reference">
+				</td>
+				<td>
+					<input list="designation" type="text" name="designation" autocomplete="off">
+					<datalist id="designation" name="designation">
 						<?php
-						$sth=ReturnReference();
+						$sth=ReturnDesignation();
 						foreach ($sth as $value) {
 							echo $value;
 							?>
@@ -48,9 +51,6 @@
 						};
 						?>
 					</datalist>
-				</td>
-				<td>
-					<textarea id="design" name="designation"></textarea>
 				</td>
 				<td>
 					<input id="marque" type="text" name="marque">
